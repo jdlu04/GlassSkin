@@ -26,11 +26,14 @@ def get_makeup(): #params setup
         'rating_greater_than': flask.request.args.get('rating_greater_than'),
         'rating_less_than': flask.request.args.get('rating_less_than')
     }
-    params = {k: v for k, v in params.items() if v is not None}
+    params = {k: v for k, v in params.items() if v is not None} #param filtering
     
     response = requests.get('https://makeup-api.herokuapp.com/api/v1/products.json', params=params)
-    return response.json()
+    data=response.json()
+    top_ten=data[:10] #returning top 10 results
+    return flask.jsonify(top_ten) #jsonify the top ten results 
 #for more documentation and other query params, visit https://makeup-api.herokuapp.com/
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
     '''try the below  link on local host 5000'''
