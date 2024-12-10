@@ -3,18 +3,18 @@ import flask_cors
 from dotenv import load_dotenv
 import os
 import requests
-
-load_dotenv()
+from bs4 import BeautifulSoup
+import json
 
 app = flask.Flask(__name__)
 flask_cors.CORS(app)
 
 @app.route('/' , methods=['GET'])
 def home(): #redirect a user to the correct page. currently its a suggestion to go to /api/makeup
-    return 'Hey there! You are on the home page of the Makeup API. Try /api/makeup instead!'
+    return 'Hey there! You are on the home page of the Makeup API. Try /api/recommended instead!'
 
 
-@app.route('/api/makeup', methods=['GET'])
+@app.route('/api/recommended', methods=['GET'])
 def get_makeup(): #params setup
     params = {
         'product_type': flask.request.args.get('product_type'),
@@ -30,9 +30,34 @@ def get_makeup(): #params setup
     
     response = requests.get('https://makeup-api.herokuapp.com/api/v1/products.json', params=params)
     data=response.json()
-    top_ten=data[:10] #returning top 10 results
-    return flask.jsonify(top_ten) #jsonify the top ten results 
+    filtered_data = [ #filtering out unnecessary cols
+        {
+            'id': product['id'],
+            'brand': product['brand'],
+            'name': product['name'],
+            'price': product['price'],
+            'price_sign': product['price_sign'],
+            'currency': product['currency'],
+            'api_featured_image': product['api_featured_image'],
+            'product_link': product['product_link'],
+            'website_link': product['website_link'],
+            'description': BeautifulSoup(product['description'], 'html.parser').get_text() if product['description'] else '', #using beuatiful soup to parse html
+            'rating': product['rating'],
+            'product_type': product['product_type'],
+            'tag_list': product['tag_list']
+        }
+        for product in data[:10] #only need 10 results
+    ]
+    
+    return flask.jsonify(filtered_data) #jsonify the filtered results
 #for more documentation and other query params, visit https://makeup-api.herokuapp.com/
+
+@app.route('/api/specific/<int:product_id>', methods=['GET']) #allows user to get a specific product by id. try out /api/specific/1048
+def get_specific(product_id):
+    response = requests.get(f'https://makeup-api.herokuapp.com/api/v1/products/{product_id}.json')
+    
+    return response.json()
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
