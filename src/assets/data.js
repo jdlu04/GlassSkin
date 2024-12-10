@@ -26,5 +26,12 @@ export const data = [
         option2: "$$",
         option3: "$$$",
         option4: "None"
+    },
+    {
+        question: "Coverage",
+        option1: "Light",
+        option2: "Full",
+        option3: "No preference"
+
     }
 ]

@@ -2,7 +2,7 @@
     border: 2px solid #171717;
     border-radius: 50px;  
     background-color: #171717;
-    color: white;
+    color: #FEFAE0;
     font-size: 50px;
     cursor: pointer;
     height: 100px; 
@@ -10,6 +10,23 @@
 }
 
 .button:hover {
+    background-color: #000000;
+    border: 2px solid #000000;
+}
+
+.buttonKit {
+    padding: 10px 20px;
+    border: 2px solid #171717;
+    border-radius: 20px;  
+    background-color: #171717;
+    color: #FEFAE0;
+    font-size: 16px;
+    cursor: pointer;
+    height: 50px;
+    width: 50%;
+}
+
+.buttonKit:hover {
     background-color: #000000;
     border: 2px solid #000000;
 }

@@ -26,24 +26,24 @@ const Quiz = () => {
     };
     
     return (
-        <div className='h-screen w-screen bg-yellow-50 bg-opacity-75 text-center text-5xl px-10 py-10'> {/* container for all the components in the quiz*/}
+        <div className='h-screen w-screen bg-cream text-center text-5xl px-10 py-10'>
             <h1>Glass Skin</h1>
             <hr />
-            <div className='text-4xl p-2 text-neutral-500'>{/* container for the question*/}
+            <div className='text-4xl p-2 text-dark_green'>
                 <h2>{data[index].question}</h2> 
             </div>
-            <div className='flex flex-col w-1/2 space-y-5 p-5 mx-auto'> {/* container for the buttons*/}
+            <div className='flex flex-col w-1/2 space-y-5 p-5 mx-auto'>
                 <button
-                    className='buttonOption'
-                    onClick={() => setAnswer(data[index].option1)}>{data[index].option1}</button>
+                    className='buttonOption ease-out duration-300'
+                    onClick={(className="") => setAnswer(data[index].option1)}>{data[index].option1}</button>
                 <button
-                    className='buttonOption'
+                    className='buttonOption ease-out duration-300'
                     onClick={() => setAnswer(data[index].option2)}>{data[index].option2}</button>
                 <button
-                    className='buttonOption'
+                    className='buttonOption ease-out duration-300'
                     onClick={() => setAnswer(data[index].option3)}>{data[index].option3}</button>
                 <button
-                    className='buttonOption'
+                    className='buttonOption ease-out duration-300'
                     onClick={() => setAnswer(data[index].option4)}>{data[index].option4}</button>
             </div>
             <button 
