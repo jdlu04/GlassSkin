@@ -12,6 +12,7 @@ import {
   SignIn,
   useUser,
 } from "@clerk/clerk-react";
+import { Button } from "@/Components/ui/button";
 
 const LandingPage = () => {
   const [showSignIn, setShowSignIn] = useState(false);
