@@ -1,6 +1,6 @@
 import React from 'react';
-import Quiz from './Components/Quiz/Quiz';
-import LandingPage from './Components/LandingPage/LandingPage';
+import Quiz from './pages/Quiz/Quiz';
+import LandingPage from './pages/LandingPage/LandingPage';
 import NavBar from './Components/NavBar/NavBar';
 import { Route, Routes } from 'react-router-dom';
 
