@@ -28,6 +28,39 @@ const LandingPage = () => {
     }
   }, [search]);
 
+  useEffect(() => {
+    const addUserToDatabase = async () => {
+      if (user) {
+        try {
+          const response = await fetch('http://localhost:5000/api/add_user', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              id: user.id,
+              primaryEmailAddress: user.primaryEmailAddress.emailAddress,
+              createdAt: user.createdAt,
+              firstName: user.firstName,
+              lastName: user.lastName,
+            }),
+          });
+
+          if (!response.ok) {
+            throw new Error('Failed to add user');
+          }
+
+          const result = await response.json();
+          console.log(result.message);
+        } catch (error) {
+          console.error('Error adding user:', error);
+        }
+      }
+    };
+
+    addUserToDatabase();
+  }, [user]);
+
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) {
       setShowSignIn(false);
