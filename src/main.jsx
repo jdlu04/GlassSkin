@@ -1,3 +1,5 @@
+import React from "react";
+import ReactDOM from "react-dom/client";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
@@ -11,18 +13,32 @@ if (!PUBLISHABLE_KEY) {
   throw new Error("Missing Publishable Key");
 }
 
-createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <BrowserRouter>
-      <ClerkProvider
-        appearance={{
-          variables: { colorPrimary: "black" },
-        }}
-        publishableKey={PUBLISHABLE_KEY}
-        afterSignOutUrl="/"
-      >
-        <App />
-      </ClerkProvider>
-    </BrowserRouter>
-  </StrictMode>
+// createRoot(document.getElementById("root")).render(
+//   <StrictMode>
+//     <BrowserRouter>
+//       <ClerkProvider
+//         appearance={{
+//           variables: { colorPrimary: "black" },
+//         }}
+//         publishableKey={PUBLISHABLE_KEY}
+//         afterSignOutUrl="/"
+//       >
+//         <App />
+//       </ClerkProvider>
+//     </BrowserRouter>
+//   </StrictMode>
+// );
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <ClerkProvider
+      appearance={{
+        variables: { colorPrimary: "black" },
+      }}
+      publishableKey={PUBLISHABLE_KEY}
+      afterSignOutUrl="/"
+    >
+      <App />
+    </ClerkProvider>
+  </React.StrictMode>
 );
