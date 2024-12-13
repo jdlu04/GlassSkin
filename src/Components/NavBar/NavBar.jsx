@@ -12,9 +12,14 @@ const NavBar = () => {
         <div className="flex items-center space-x-4">
           <h1 className="text-4xl">Glass Skin</h1>
           <h1 className="text-4xl text-green">|</h1>
-          <button className="text-lg" onClick={() => navigate("/")}>
-            Home
-          </button>
+          <div className="flex justify-between gap-6">
+            <button className="text-lg" onClick={() => navigate("/")}>
+              Home
+            </button>
+            <button className="text-lg" onClick={() => navigate("/products")}>
+              Products
+            </button>
+          </div>
         </div>
         <div className="flex items-center space-x-2 pr-4">
           <button className="text-lg m-5">shopping list</button>
