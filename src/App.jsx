@@ -5,6 +5,7 @@ import NavBar from "./Components/NavBar/NavBar";
 import { createBrowserRouter, Route, RouterProvider, Routes } from "react-router-dom";
 import Products from "./pages/Products";
 import AppLayout from "./layouts/AppLayout";
+import ShoppingList from "./pages/ShoppingList";
 
 
 const router = createBrowserRouter([
@@ -27,6 +28,12 @@ const router = createBrowserRouter([
         path: "/products",
         element: (
           <Products />
+        ),
+      },
+      {
+        path: "/shopping-list",
+        element: (
+          <ShoppingList />
         ),
       },
     ],
