@@ -3,30 +3,53 @@ import { data } from '../assets/data';
 import { useNavigate } from "react-router-dom";
 
 const Quiz = () => {
-    const [index, setIndex] = useState(0); 
-    const [preferences, setPreferences] = useState([]); // stored user preferences
+    const [index, setIndex] = useState(0);  
     const [choice, setChoice] = useState(''); // helps pass the current choice into preferences
     const [buttonString, setButtonString] = useState('Next');
     const [selected, setSelected] = useState(null);
     const navigate = useNavigate();
+    const [preferences, setPreferences] = useState({
+        question1: '',
+        question2: '',
+        question3: '',
+        question4: '',
+        question5: null
 
-    const next = () => { //handles nagivate to shopping list and the name of next button
+    }); 
+
+    const next = () => { //handles the next button
         if (choice === '') {
             return;
         }
-        setPreferences((prevOptions) => [...prevOptions, choice]); 
+        setPreferences((prevPreferences) => ({
+            ...prevPreferences,
+            [`question${index + 1}`]: choice, 
+        }));
+        if (index === data.length - 1) {
+            sendPreferences();
+            navigate('/shopping-list')
+            return;
+        }
+        setSelected(null)
         setChoice('');
         if (index === data.length - 2) { 
             setButtonString('Submit');
-        } else if (index === data.length - 1) {
-            navigate('/shopping-list');
-            return;
         }
-
-        setIndex((prevIndex) => prevIndex + 1);
+        setIndex(index + 1);
     };
+    const sendPreferences = async () => {
+        const response = await fetch('http://127.0.0.1:5000/api/recommended_kit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(preferences),
+        });
+        const data = await response.json();
+        console.log(data)
+    }
 
-    const buttonOption = Object.keys(data[index]) 
+    const buttonOption = Object.keys(data[index]) //  makes a button per option in data
         .filter((key) => key.startsWith('option') && data[index][key] != null)
         .map((key, i) => (
             <button
@@ -59,15 +82,12 @@ const Quiz = () => {
                        {buttonString}
                     </button>
                 </div>
-            </div>
-
-            <div className='text-base p-2'>
-                <h3>Selected Options:</h3>
-                <ul>
-                    {preferences.map((option, i) => (
-                        <li key={i}>{option}</li>
-                    ))}
-                </ul>
+                {/*
+                <div>
+                    <h3>Debugging</h3>
+                    <pre>{JSON.stringify(preferences, null, 2)}</pre>
+                </div>
+                */}
             </div>
         </div>
     );

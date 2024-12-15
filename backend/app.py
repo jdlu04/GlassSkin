@@ -67,6 +67,16 @@ def get_makeup():  # params setup
     return flask.jsonify(filtered_data)  # jsonify the filtered results
 # for more documentation and other query params, visit https://makeup-api.herokuapp.com/
 
+@app.route('/api/recommended_kit', methods=['POST'])
+def get_makeup_kit():
+    preferences = request.get_json() 
+    print(preferences)
+
+    params = {'product_type': 'foundation'}
+    response = requests.get('https://makeup-api.herokuapp.com/api/v1/products.json', params=params)
+    data = response.json()
+
+    return jsonify(data)
 
 # allows user to get a specific product by id. try out /api/specific/1048
 @app.route('/api/specific/<int:product_id>', methods=['GET'])
@@ -100,7 +110,6 @@ def add_user():
         return jsonify({"message": "User added successfully"}), 201
     else:
         return jsonify({"message": "User already exists"}), 200
-
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
