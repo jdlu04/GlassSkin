@@ -1,6 +1,6 @@
 import React from "react";
-import Quiz from "./pages/Quiz/Quiz";
-import LandingPage from "./pages/LandingPage/LandingPage";
+import Quiz from "./pages/Quiz";
+import LandingPage from "./pages/LandingPage";
 import NavBar from "./Components/NavBar/NavBar";
 import { createBrowserRouter, Route, RouterProvider, Routes } from "react-router-dom";
 import Products from "./pages/Products";

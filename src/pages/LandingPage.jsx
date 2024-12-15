@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
-import "./LandingPage.css";
-import makeupSpread from "../../assets/Images/makeupSpread.jpg";
-import "../../Components/Animations/Animations.css";
-import cat from "../../assets/Images/cat.png";
-import makeupKit from "../../assets/Images/makeupKit.png";
+import makeupSpread from "../assets/Images/makeupSpread.jpg";
+import "../Components/Animations/Animations.css";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   SignedIn,
@@ -83,12 +80,10 @@ const LandingPage = () => {
           </div>
           <SignedOut>
             <div className="text-center py-10">
-              <button
-                className="button bounce"
-                onClick={() => navigate("/quiz")}
-              >
-                Join Today
-              </button>
+              <button className='bg-neutral-800 hover:bg-neutral-950  text-6xl text-cream rounded-full py-8 px-14'
+                    onClick={() => navigate('/quiz')}>
+                    Join Today
+                </button>
               <div className="p-5">
                 <h1>Already have an account?</h1>
                 <button onClick={() => setShowSignIn(true)}>Sign in</button>

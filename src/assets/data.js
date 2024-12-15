@@ -30,8 +30,9 @@ export const data = [
     {
         question: "Coverage",
         option1: "Light",
-        option2: "Full",
-        option3: "No preference"
+        option2: "Medium",
+        option3: "Full",
+        option4: "No preference"
 
     }
 ]
