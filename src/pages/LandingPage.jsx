@@ -90,7 +90,6 @@ const LandingPage = () => {
     <>
       <main>
         <div className="h-screen w-screen bg-cream flex flex-col">
-          {/*<img className="bounce"src={cat}></img>*/}
           <div className="min-h-75 w-screen bg-green">
             <div className="text-center py-20 px-10 text-8xl">
               <h1 className="fade-in">Curated for your look</h1>
