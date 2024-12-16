@@ -132,30 +132,6 @@ def get_specific(product_id):
 
     return response.json()
 
-# add user to database based on clerk response
-@app.route('/api/add_user', methods=['POST'])
-def add_user():
-    data = request.json
-    user_id = data.get("id")
-    email = data.get("primaryEmailAddress")
-    created_at = data.get("createdAt")
-    first_name = data.get("firstName") or None
-    last_name = data.get("lastName") or None
-
-    user_data = {
-        "id": user_id,
-        "primaryEmailAddress": email,
-        "createdAt": created_at,
-        "firstName": first_name,
-        "lastName": last_name,
-    }
-
-    user = supabase.table("users").select().eq("id", user_id).execute()
-    if not user.data:
-        user = supabase.table("users").insert(user_data).execute()
-        return jsonify({"message": "User added successfully"}), 201
-    else:
-        return jsonify({"message": "User already exists"}), 200
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

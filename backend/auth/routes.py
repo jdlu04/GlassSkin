@@ -69,13 +69,80 @@ def signup():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+      
+
+@auth_bp.route("/login", methods=["POST"])
+def login():
+    data = request.json
+    email = data.get("email")
+    password = data.get("password")
+
+    if not email or not password:
+        return jsonify({"message": "All fields are required"}), 400
+
+    try:
+        user_response = supabase.table("users").select("*").eq("primaryEmailAddress", email).execute()
+        if not user_response.data:
+            return jsonify({"message": "Invalid credentials"}), 400
+
+        user = user_response.data[0] 
+
+        hashed_password = user["password"]
+        if not bcrypt.checkpw(password.encode("utf-8"), hashed_password.encode("utf-8")):
+            return jsonify({"message": "Invalid credentials"}), 400
+
+        token = generate_token(user["id"])
+
+        resp = make_response(jsonify({
+            "id": user["id"],
+            "firstName": user["firstName"],
+            "lastName": user["lastName"],
+            "email": user["primaryEmailAddress"]
+        }), 200)
+
+        resp.set_cookie("jwt", token, httponly=True, max_age=7 * 24 * 60 * 60)
+
+        return resp
+
+    except Exception as e:
+        return jsonify({"error": "Internal Server Error", "details": str(e)}), 500
 
 
 @auth_bp.route("/logout", methods=["POST"])
 def logout():
     try:
-        resp.set_cookie("jwt", "", max_age=0, httponly=True)
         resp = make_response(jsonify({"message": "Logged out successfully"}), 200)
+        resp.set_cookie("jwt", "", max_age=0, httponly=True)
         return resp
     except Exception as e:
         return jsonify({"error": "Failed to logout", "details": str(e)}), 500
+
+
+#syncs clerk users to db 
+@auth_bp.route('/sync_user', methods=['POST'])
+def sync_user():
+    data = request.json
+    user_id = data.get("id")
+    email = data.get("primaryEmailAddress")
+    created_at = data.get("createdAt")
+    first_name = data.get("firstName") or None
+    last_name = data.get("lastName") or None
+
+    user_uuid = str(uuid.uuid4())
+
+    user_data = {
+        "id": user_uuid,
+        "clerk_id": user_id,
+        "primaryEmailAddress": email,
+        "createdAt": created_at,
+        "firstName": first_name,
+        "lastName": last_name,
+    }
+
+    user = supabase.table("users").select().eq("clerk_id", user_id).execute()
+    if not user.data:
+        user = supabase.table("users").insert(user_data).execute()
+        return jsonify({"message": "User added successfully"}), 201
+    else:
+        return jsonify({"message": "User already exists"}), 200
+

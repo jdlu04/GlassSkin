@@ -24,7 +24,7 @@ const LandingPage = () => {
     const addUserToDatabase = async () => {
       if (user) {
         try {
-          const response = await fetch('http://localhost:5000/api/add_user', {
+          const response = await fetch('http://localhost:5000/api/auth/sync_user', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
