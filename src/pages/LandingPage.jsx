@@ -6,6 +6,9 @@ import {SignedIn, SignedOut, UserButton, SignIn, useUser} from "@clerk/clerk-rea
 import { Button } from "@/Components/ui/button";// should probably use this
 import supabase from "../Components/Supabase/supabaseClient"; //calling my supabase function
 import Recommended from "@/Components/Recommended/Recommended";
+
+
+
 const LandingPage = () => {
   const [showSignIn, setShowSignIn] = useState(false);
   const [search, setSearch] = useSearchParams();
@@ -19,7 +22,7 @@ const LandingPage = () => {
       setShowSignIn(true);
     }
   }, [search]);
-
+  
   useEffect(() => {
     const addUserToDatabase = async () => {
       if (user) {
@@ -65,11 +68,13 @@ const LandingPage = () => {
         //console.log("Preferences data:", data.id);
         if (error) {
           console.error("Error fetching preferences:", error);
+          navigate("/quiz"); //if error, navigate to quiz, lol
           return;
         }
 
-        if (!data || !data.preferences) { //funky way of checking if user has preferences
-          navigate("/quiz");
+        if (data && (!data.preferences || data.preferences.length === 0)) {
+          navigate("/quiz");       //funky way of checking if user has preferences
+          
         }
       }
     };
