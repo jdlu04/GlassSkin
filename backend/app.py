@@ -26,19 +26,31 @@ def home():  # redirect a user to the correct page. currently its a suggestion t
     return 'Hey there! You are on the home page of the Makeup API. Try /api/recommended instead!'
 
 
-@app.route('/api/recommended', methods=['GET'])
+#@app.route('/api/recommended', methods=['GET'])
+@app.route('/api/recommended_kit', methods=['POST'])
 def get_makeup():  # params setup
-    params = {
-        'product_type': flask.request.args.get('product_type'),
-        'product_category': flask.request.args.get('product_category'),
-        'product_tags': flask.request.args.get('product_tags'),
-        'brand': flask.request.args.get('brand'),
-        'price_greater_than': flask.request.args.get('price_greater_than'),
-        'price_less_than': flask.request.args.get('price_less_than'),
-        'rating_greater_than': flask.request.args.get('rating_greater_than'),
-        'rating_less_than': flask.request.args.get('rating_less_than')
-    }
+    preferences = request.get_json() 
+    print(preferences)
+    params = {}
+
+    for k, v in preferences.items():
+        if v == 'full':
+            params['product_type'] = 'foundation'
+        else:
+            continue
+
+    #params = {
+    #    'product_type': 'foundation'
+        #'product_category': flask.request.args.get('product_category'),
+        #'product_tags': flask.request.args.get('product_tags'),
+        #'brand': flask.request.args.get('brand'),
+        #'price_greater_than': flask.request.args.get('price_greater_than'),
+        #'price_less_than': flask.request.args.get('price_less_than'),
+        #'rating_greater_than': flask.request.args.get('rating_greater_than'),
+        #'rating_less_than': flask.request.args.get('rating_less_than')
+    #}
     # param filtering
+    print(params)
     params = {k: v for k, v in params.items() if v is not None}
 
     response = requests.get(
@@ -61,22 +73,12 @@ def get_makeup():  # params setup
             'product_type': product['product_type'],
             'tag_list': product['tag_list']
         }
-        for product in data[:10]  # only need 10 results
+        for product in data[:1]  # only need 10 results
     ]
+    print(filtered_data)
 
     return flask.jsonify(filtered_data)  # jsonify the filtered results
 # for more documentation and other query params, visit https://makeup-api.herokuapp.com/
-
-@app.route('/api/recommended_kit', methods=['POST'])
-def get_makeup_kit():
-    preferences = request.get_json() 
-    print(preferences)
-
-    params = {'product_type': 'foundation'}
-    response = requests.get('https://makeup-api.herokuapp.com/api/v1/products.json', params=params)
-    data = response.json()
-
-    return jsonify(data)
 
 # allows user to get a specific product by id. try out /api/specific/1048
 @app.route('/api/specific/<int:product_id>', methods=['GET'])
@@ -114,4 +116,3 @@ def add_user():
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
     '''try the below  link on local host 5000'''
-# /api/makeup?product_type=lipstick&brand=maybelline
