@@ -34,9 +34,6 @@ const NavBar = () => {
                 },
               }}
             >
-              <UserButton.MenuItems>
-                {/* <UserButton.Action label="manageAccount" /> */}
-              </UserButton.MenuItems>
             </UserButton>
           </SignedIn>
         </div>
