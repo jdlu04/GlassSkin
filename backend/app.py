@@ -64,7 +64,8 @@ def get_makeup(): #params setup
             'description': BeautifulSoup(product['description'], 'html.parser').get_text() if product['description'] else '', #using beuatiful soup to parse html
             'rating': product['rating'],
             'product_type': product['product_type'],
-            'tag_list': product['tag_list']
+            'tag_list': product['tag_list'],
+            'product_colors': product['product_colors']
         }
         for product in data[:10] #only need 10 results
     ]
@@ -101,7 +102,8 @@ def get_makeup_uncapped(): #params setup
             'description': BeautifulSoup(product['description'], 'html.parser').get_text() if product['description'] else '', #using beuatiful soup to parse html
             'rating': product['rating'],
             'product_type': product['product_type'],
-            'tag_list': product['tag_list']
+            'tag_list': product['tag_list'],
+            'product_colors': product['product_colors']
         }
         for product in data 
     ]

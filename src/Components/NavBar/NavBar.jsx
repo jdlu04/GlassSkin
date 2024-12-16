@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { SignedIn, UserButton, useUser } from "@clerk/clerk-react";
+import Quiz from './../../pages/Quiz';
 
 const NavBar = () => {
   const { user } = useUser();
@@ -20,6 +21,9 @@ const NavBar = () => {
             </button>
             <button className="text-lg" onClick={() => navigate("/products")}>
               Products
+            </button>
+            <button className="text-lg" onClick={() => navigate("/quiz")}>
+              Quiz
             </button>
           </div>
         </div>
