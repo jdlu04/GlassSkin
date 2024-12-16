@@ -13,8 +13,12 @@ from auth.routes import auth_bp
 
 #note to professor, we have six routes in app.py, and 5 routes in auth/routes.py.
 app = flask.Flask(__name__)
-flask_cors.CORS(app)
-CORS(app, supports_credentials=True, origins=["http://localhost:5173"])
+CORS(
+    app,
+    supports_credentials=True,  
+    origins=["http://localhost:5173"], 
+    allow_headers=["Content-Type", "Authorization"]  
+)
 
 load_dotenv()
 

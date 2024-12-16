@@ -107,9 +107,7 @@ def login():
 
         resp = make_response(jsonify({
             "id": user["id"],
-            "firstName": user["firstName"],
-            "lastName": user["lastName"],
-            "email": user["primaryEmailAddress"]
+            'auth_provider': 'local'
         }), 200)
 
         #set jwt as cookie
@@ -138,9 +136,35 @@ def check_auth():
     try:
         # Access the user data from the middleware (g.user)
         user_data = g.user
-        return jsonify(user_data), 200
+        
+        # Check if the user is from Clerk
+        if user_data.get('auth_provider') == 'clerk':
+            clerk_id = user_data.get('clerk_id')  # Clerk-provided ID
+            
+            # Query the database for a user with the matching clerk_id
+            user_response = supabase.table("users").select("*").eq("clerk_id", clerk_id).execute()
+            user = user_response.data[0]
+            
+            clerk_user_data = {
+                'id': user["id"],
+                'clerk_id': user_data.get('clerk_id'),
+                'auth_provider': 'clerk'
+            }
+            return jsonify(clerk_user_data), 200
+        
+        # For local users, return local user data
+        local_user_data = {
+            'id': user_data.get('id'),
+            'auth_provider': 'local'
+        }
+        return jsonify(local_user_data), 200
+    
     except Exception as e:
-        return jsonify({"message": "Internal Server Error", "error": str(e)}), 500
+        print(f"Authentication check error: {str(e)}")
+        return jsonify({
+            "message": "Authentication check failed", 
+            "error": str(e)
+        }), 401
 
 
 #syncs clerk users to db 
