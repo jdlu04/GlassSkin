@@ -62,13 +62,13 @@ const LandingPage = () => {
   useEffect(() => {
     const checkPreferences = async () => {
       if (user) {
-        console.log("User ID:", user.id);
+        //console.log("User ID:", user.id);
         const { data, error } = await supabase
           .from("user_preferences")
           .select("preferences")
           .eq("id", user.id)
           .single();
-        console.log("Preferences data:", data.id);
+        //console.log("Preferences data:", data.id);
         if (error) {
           console.error("Error fetching preferences:", error);
           return;
