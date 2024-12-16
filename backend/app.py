@@ -18,6 +18,8 @@ load_dotenv()
 
 # Initialize JWT
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
+app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
+app.config["JWT_ACCESS_COOKIE_NAME"] = "jwt"
 jwt = JWTManager(app)
 
 url = os.environ.get("SUPABASE_URL")

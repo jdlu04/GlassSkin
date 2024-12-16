@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, make_response
+from flask import Blueprint, request, jsonify, make_response, g
 from dotenv import load_dotenv
 from datetime import datetime, timezone
 from supabase import create_client
@@ -8,6 +8,7 @@ from supabase import create_client, Client
 import bcrypt  
 import uuid
 import os
+from .middleware import protect_route
 
 load_dotenv()
 
@@ -62,14 +63,14 @@ def signup():
         response = supabase.table("users").insert(new_user).execute()
 
         if response.data:
-            token = generate_token(user_uuid) #generate token for user 
+            token = generate_token(new_user["id"]) #generate token for user
             resp = make_response(jsonify({
                 "id": user_uuid,
                 "firstName": first_name,
                 "lastName": last_name,
                 "email": email
             }), 201)
-            resp.set_cookie("jwt", token, httponly=True, samesite="Strict", max_age=7*24*60*60) #set jwt as cookie 
+            resp.set_cookie("jwt", token, httponly=True, samesite="Strict", max_age=7 * 24 * 60 * 60) #set jwt as cookie 
             return resp
 
         return jsonify({"message": "Signup failed"}), 400
@@ -112,7 +113,7 @@ def login():
         }), 200)
 
         #set jwt as cookie
-        resp.set_cookie("jwt", token, httponly=True, max_age=7 * 24 * 60 * 60)
+        resp.set_cookie("jwt", token, httponly=True, samesite="Strict", max_age=7 * 24 * 60 * 60)
 
         return resp
 
@@ -129,6 +130,17 @@ def logout():
         return resp
     except Exception as e:
         return jsonify({"error": "Failed to logout", "details": str(e)}), 500
+      
+#check users authentication status and return user object if authenticated
+@auth_bp.route("/checkauth", methods=["GET"])
+@protect_route
+def check_auth():
+    try:
+        # Access the user data from the middleware (g.user)
+        user_data = g.user
+        return jsonify(user_data), 200
+    except Exception as e:
+        return jsonify({"message": "Internal Server Error", "error": str(e)}), 500
 
 
 #syncs clerk users to db 
