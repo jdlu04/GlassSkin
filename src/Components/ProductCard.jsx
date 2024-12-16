@@ -1,32 +1,4 @@
 import React, { useEffect, useState } from 'react';
-/*
-const ProductCard = () => {
-  const [products, setProducts] = useState([]);
-  
-  return (
-    <div className='w-screen p-5 bg-cream flex flex-wrap justify-center gap-5'>
-      {products.length > 0 ? (
-        products.map((product, index) => (
-          <div 
-            key={index}
-            className='w-1/5 p-10 bg-slate-50 rounded-sm shadow-lg'
-            >
-            <h2>{product.name}</h2>
-            <a href={product.product_link} target="_blank" rel="noopener noreferrer">
-              <img src={`https:${product.api_featured_image}`} alt={product.name} />
-            </a>
-            <p>{product.brand}</p>
-            <p>${product.price}</p>
-          </div>
-        ))
-      ) : (
-        <p>Loading</p>
-      )}
-    </div>
-  );
-};
-*/
-
 
 const ProductCard = ({ productId }) => {
   const [product, setProduct] = useState(null);
