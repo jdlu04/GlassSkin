@@ -7,6 +7,9 @@ import Products from "./pages/Products";
 import AppLayout from "./layouts/AppLayout";
 import ShoppingList from "./pages/ShoppingList";
 import Test from "./pages/test";
+import SignupPage from "./pages/SignupPage";
+import LoginPage from "./pages/LoginPage";
+import LoginLayout from "./layouts/LoginLayout";
 
 const router = createBrowserRouter([ //all redirects within frontend server
   {
@@ -40,6 +43,23 @@ const router = createBrowserRouter([ //all redirects within frontend server
         path: "/test",
         element: (
           <Test/>
+        ),
+      },
+    ],
+  },
+  {
+    element: <LoginLayout />,
+    children: [
+      {
+        path: "/signup",
+        element: (
+          <SignupPage />
+        ),
+      },
+      {
+        path: "/login",
+        element: (
+          <LoginPage />
         ),
       },
     ],
