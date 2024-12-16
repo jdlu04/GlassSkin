@@ -8,7 +8,7 @@ import AppLayout from "./layouts/AppLayout";
 import ShoppingList from "./pages/ShoppingList";
 
 
-const router = createBrowserRouter([
+const router = createBrowserRouter([ //all redirects within frontend server
   {
     element: <AppLayout />,
     children: [

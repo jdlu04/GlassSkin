@@ -9,13 +9,14 @@ import {
   SignIn,
   useUser,
 } from "@clerk/clerk-react";
-import { Button } from "@/Components/ui/button";
+import { Button } from "@/Components/ui/button";// should probably use this
+import supabase from "../Components/Supabase/supabaseClient"; //calling my supabase function
 
 const LandingPage = () => {
   const [showSignIn, setShowSignIn] = useState(false);
   const [search, setSearch] = useSearchParams();
 
-  const { user } = useUser();
+  const { user, isSignedIn } = useUser();
 
   const navigate = useNavigate();
 
@@ -58,6 +59,36 @@ const LandingPage = () => {
     addUserToDatabase();
   }, [user]);
 
+  useEffect(() => {
+    const checkPreferences = async () => {
+      if (user) {
+        console.log("User ID:", user.id);
+        const { data, error } = await supabase
+          .from("user_preferences")
+          .select("preferences")
+          .eq("id", user.id)
+          .single();
+        console.log("Preferences data:", data.id);
+        if (error) {
+          console.error("Error fetching preferences:", error);
+          return;
+        }
+
+        if (!data || !data.preferences) { //funky way of checking if user has preferences
+          navigate("/quiz");
+        }
+      }
+    };
+
+    checkPreferences();
+  }, [user, navigate]);
+
+  useEffect(() => {
+    if (isSignedIn) {
+      navigate("/quiz");
+    }
+  }, [isSignedIn, navigate]);
+
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) {
       setShowSignIn(false);
@@ -96,15 +127,13 @@ const LandingPage = () => {
         </div>
         <div className="h-screen w-screen relative z-0 justify-between flex items-center  bg-white">
           <div className="h-screen w-4/5 relative z-10">
-            <h1 className="text-8xl m-14">About Us</h1>
-            <h2 className="text-4xl bg-gray-50 m-14 p-10 pulse-animation2">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
+            <h1 className="text-6xl m-14">About Us</h1>
+            <h2 className="text-2xl bg-gray-50 m-14 p-10 pulse-animation2">
+            Introducing Glass Skin, the ultimate product for beauty beginners seeking their perfect glow. Whether you're just stepping into the world of skincare and makeup or want a straightforward solution, Glass Skin takes the guesswork out of finding the right products for your desired look.
+            <br></br><br></br>
+            Designed with simplicity and elegance in mind, Glass Skin analyzes your preferences—whether you’re aiming for a dewy, radiant complexion, a matte finish, or something in between—and offers curated recommendations tailored to your unique style. Start your beauty journey with confidence, knowing that each product we suggest will help you achieve that coveted “glass skin” finish effortlessly.
+            <br></br><br></br>
+            Your look, your way—made easy with Glass Skin.
             </h2>
           </div>
           <img className="relative z-10 m-10" src={makeupSpread}></img>

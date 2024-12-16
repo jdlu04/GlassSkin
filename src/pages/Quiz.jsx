@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { data } from '../assets/data';
 import { useNavigate } from "react-router-dom";
+import supabase from "../Components/Supabase/supabaseClient"; //supabase function
 
 const Quiz = () => {
     const [index, setIndex] = useState(0);  
