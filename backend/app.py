@@ -69,7 +69,42 @@ def get_makeup(): #params setup
     
     return flask.jsonify(filtered_data) #jsonify the filtered results
     
-
+@app.route('/api/recommended_uncapped', methods=['GET'])#as the name suggests, this endpoint returns all the results without any limit
+def get_makeup_uncapped(): #params setup
+    params = {
+        'product_type': flask.request.args.get('product_type'),
+        'product_category': flask.request.args.get('product_category'),
+        'product_tags': flask.request.args.get('product_tags'),
+        'brand': flask.request.args.get('brand'),
+        'price_greater_than': flask.request.args.get('price_greater_than'),
+        'price_less_than': flask.request.args.get('price_less_than'),
+        'rating_greater_than': flask.request.args.get('rating_greater_than'),
+        'rating_less_than': flask.request.args.get('rating_less_than')
+    }
+    params = {k: v for k, v in params.items() if v is not None} #param filtering
+    
+    response = requests.get('https://makeup-api.herokuapp.com/api/v1/products.json', params=params)
+    data=response.json()
+    filtered_data = [ #filtering out unnecessary cols
+        {
+            'id': product['id'],
+            'brand': product['brand'],
+            'name': product['name'],
+            'price': product['price'],
+            'price_sign': product['price_sign'],
+            'currency': product['currency'],
+            'api_featured_image': product['api_featured_image'],
+            'product_link': product['product_link'],
+            'website_link': product['website_link'],
+            'description': BeautifulSoup(product['description'], 'html.parser').get_text() if product['description'] else '', #using beuatiful soup to parse html
+            'rating': product['rating'],
+            'product_type': product['product_type'],
+            'tag_list': product['tag_list']
+        }
+        for product in data 
+    ]
+    
+    return flask.jsonify(filtered_data) #jsonify the filtered results
 
 @app.route('/api/recommended_kit', methods=['GET'])
 def get_kits():  # params setup

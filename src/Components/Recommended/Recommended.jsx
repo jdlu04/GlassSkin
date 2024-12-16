@@ -21,7 +21,7 @@ const Recommended = () => {
             console.error("Error fetching user preferences:", error);
             return;
           }
-          //console.log("User preferences:", data);//debug
+          console.log("User preferences:", data);//debug
           const preferencesArray = data.preferences;
           const queryParams = new URLSearchParams();//this affixed the user preferences to the backend url to get the json data
           preferencesArray.forEach(preference => {
@@ -33,6 +33,8 @@ const Recommended = () => {
           });
 
           //get recommendations from the API
+          //console.log('Attempted fetch at:', 'http://127.0.0.1:5000/api/recommended?${queryParams.toString()}');
+          console.log('Query params:', queryParams.toString());
           const response = await fetch(`http://127.0.0.1:5000/api/recommended?${queryParams.toString()}`);
           if (!response.ok) {
             throw new Error('Failed to fetch recommendations');
@@ -48,7 +50,7 @@ const Recommended = () => {
     fetchRecommendations();
   }, [user]);
 
-  return (//info displayed on the recommended component
+  return ( //info displayed on the recommended component
     <div>
       <h1>Recommended Products</h1>
       {recommendations.length > 0 ? (
