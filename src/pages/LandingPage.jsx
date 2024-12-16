@@ -83,11 +83,7 @@ const LandingPage = () => {
     checkPreferences();
   }, [user, navigate]);
 
-  useEffect(() => {
-    if (isSignedIn) {
-      navigate("/quiz");
-    }
-  }, [isSignedIn, navigate]);
+  
 
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) {
