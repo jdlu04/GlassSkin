@@ -2,10 +2,14 @@ import React, { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { SignedIn, UserButton, useUser } from "@clerk/clerk-react";
 import Quiz from './../../pages/Quiz';
+import { LogOut, User } from "lucide-react";
+import { auth } from "@/auth/auth";
 
 const NavBar = () => {
   const { user } = useUser();
   const navigate = useNavigate();
+
+  const { logout, authUser } = auth();
 
   return (
     <>
@@ -27,19 +31,35 @@ const NavBar = () => {
             </button>
           </div>
         </div>
-        <div className="flex items-center space-x-2 pr-4">
-          <Link to="/shopping-list" className="text-lg m-5">shopping list</Link>
-          <SignedIn>
-            <UserButton
-              afterSignOutUrl="/"
-              appearance={{
-                elements: {
-                  avatarBox: "w-10 h-10",
-                },
-              }}
-            >
-            </UserButton>
-          </SignedIn>
+        <div className="flex items-center space-x-2 pr-4 gap-5">
+          <Link to="/shopping-list" className="text-lg">
+            shopping list
+          </Link>
+
+          {(authUser || user) && (
+            <>
+              <Link to={"/profile"} className={`btn btn-sm gap-2 flex`}>
+                <User className="size-5" />
+                <span className="hidden sm:inline">Profile</span>
+              </Link>
+
+              <button className="flex gap-2 items-center" onClick={logout}>
+                <LogOut className="size-5" />
+                <span className="hidden sm:inline">Logout</span>
+              </button>
+
+              <SignedIn>
+                <UserButton
+                  afterSignOutUrl="/"
+                  appearance={{
+                    elements: {
+                      avatarBox: "w-10 h-10",
+                    },
+                  }}
+                ></UserButton>
+              </SignedIn>
+            </>
+          )}
         </div>
       </div>
       <div className="bg-green h-1 w-screen "> </div>

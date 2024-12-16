@@ -1,6 +1,7 @@
 import flask
 from flask import request, jsonify
-import flask_cors
+import flask_cors  
+from flask_cors import CORS
 from dotenv import load_dotenv
 import os
 from supabase import create_client, Client
@@ -13,6 +14,7 @@ from auth.routes import auth_bp
 
 app = flask.Flask(__name__)
 flask_cors.CORS(app)
+CORS(app, supports_credentials=True, origins=["http://localhost:5173"])
 
 load_dotenv()
 
