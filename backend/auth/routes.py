@@ -66,9 +66,7 @@ def signup():
             token = generate_token(new_user["id"]) #generate token for user
             resp = make_response(jsonify({
                 "id": user_uuid,
-                "firstName": first_name,
-                "lastName": last_name,
-                "email": email
+                'auth_provider': 'local'
             }), 201)
             resp.set_cookie("jwt", token, httponly=True, samesite="Strict", max_age=7 * 24 * 60 * 60) #set jwt as cookie 
             return resp
