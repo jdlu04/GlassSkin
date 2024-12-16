@@ -119,7 +119,37 @@ def get_specific(product_id):
         f'https://makeup-api.herokuapp.com/api/v1/products/{product_id}.json')
     return response.json()
 
+@app.route('/supabase/getPreference', methods=['GET'])
+def get_user_preferences():
+    try:
+        user_id = request.args.get('user_id')
+        if not user_id:
+            return jsonify({"message": "User ID is required"}), 400
 
+        response = supabase.table('user_preferences').select('preferences').eq('id', user_id).single().execute()
+
+        if response.data is None:
+            return jsonify({"message": "Error fetching user preferences"}), 500
+
+        return jsonify(response.data), 200
+    except Exception as e:
+        return jsonify({"message": "Internal Server Error", "error": str(e)}), 500
+
+@app.route('/supabase/getCart', methods=['GET'])
+def get_user_cart():
+    try:
+        user_id = request.args.get('user_id')
+        if not user_id:
+            return jsonify({"message": "User ID is required"}), 400
+
+        response = supabase.table('user_preferences').select('cart').eq('id', user_id).single().execute()
+
+        if response.data is None:
+            return jsonify({"message": "Error fetching user preferences"}), 500
+
+        return jsonify(response.data), 200
+    except Exception as e:
+        return jsonify({"message": "Internal Server Error", "error": str(e)}), 500
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
     '''try the below  link on local host 5000'''
