@@ -7,19 +7,25 @@ from supabase import create_client, Client
 import requests
 from bs4 import BeautifulSoup
 import json
+from flask_jwt_extended import JWTManager
+from auth.routes import auth_bp
+
 
 app = flask.Flask(__name__)
 flask_cors.CORS(app)
 
 load_dotenv()
 
+# Initialize JWT
+app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
+jwt = JWTManager(app)
+
 url = os.environ.get("SUPABASE_URL")
 key = os.environ.get("SUPABASE_KEY")
-
 supabase = create_client(url, key)
 
-# user = supabase.table("users").select().eq("id", "1").execute()
-# print(user)
+
+app.register_blueprint(auth_bp, url_prefix='/api/auth')
 
 @app.route('/', methods=['GET'])
 def home():  # redirect a user to the correct page. currently its a suggestion to go to /api/makeup
