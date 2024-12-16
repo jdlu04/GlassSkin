@@ -6,7 +6,7 @@ import { createBrowserRouter, Route, RouterProvider, Routes } from "react-router
 import Products from "./pages/Products";
 import AppLayout from "./layouts/AppLayout";
 import ShoppingList from "./pages/ShoppingList";
-
+import Test from "./pages/test";
 
 const router = createBrowserRouter([ //all redirects within frontend server
   {
@@ -34,6 +34,12 @@ const router = createBrowserRouter([ //all redirects within frontend server
         path: "/shopping-list",
         element: (
           <ShoppingList />
+        ),
+      },
+      {
+        path: "/test",
+        element: (
+          <Test/>
         ),
       },
     ],

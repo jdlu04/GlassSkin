@@ -2,21 +2,15 @@ import React, { useEffect, useState } from "react";
 import makeupSpread from "../assets/Images/makeupSpread.jpg";
 import "../Components/Animations/Animations.css";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import {
-  SignedIn,
-  SignedOut,
-  UserButton,
-  SignIn,
-  useUser,
-} from "@clerk/clerk-react";
+import {SignedIn, SignedOut, UserButton, SignIn, useUser} from "@clerk/clerk-react";
 import { Button } from "@/Components/ui/button";// should probably use this
 import supabase from "../Components/Supabase/supabaseClient"; //calling my supabase function
-
+import Recommended from "@/Components/Recommended/Recommended";
 const LandingPage = () => {
   const [showSignIn, setShowSignIn] = useState(false);
   const [search, setSearch] = useSearchParams();
 
-  const { user, isSignedIn } = useUser();
+  const { user} = useUser();
 
   const navigate = useNavigate();
 
@@ -117,8 +111,9 @@ const LandingPage = () => {
               </div>
             </div>
           </SignedOut>
-          <SignedIn>
-            <div className="flex h-full justify-center items-center">Your Recommended Kits</div>
+          <SignedIn>  
+            <Recommended/> 
+            
           </SignedIn>
         </div>
         <div className="h-screen w-screen relative z-0 justify-between flex items-center  bg-white">
