@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { data } from '../assets/data';
 import { useNavigate } from "react-router-dom";
+import supabase from "../Components/Supabase/supabaseClient"; //supabase function
 
 const Quiz = () => {
     const [index, setIndex] = useState(0); 
@@ -14,11 +15,13 @@ const Quiz = () => {
         if (choice === '') {
             return;
         }
-        setPreferences((prevOptions) => [...prevOptions, choice]); 
+        const processedChoice = ['None', 'No preference', 'Not sure'].includes(choice) ? '' : choice; //if choice is not in the list, it will be added to preferences
+        setPreferences((prevOptions) => [...prevOptions, processedChoice]); 
         setChoice('');
         if (index === data.length - 2) { 
             setButtonString('Submit');
         } else if (index === data.length - 1) {
+            console.log("Preferences:", preferences); //debug, just wanna see what we got so far --jawad
             navigate('/shopping-list');
             return;
         }

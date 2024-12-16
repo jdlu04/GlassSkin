@@ -9,13 +9,14 @@ import {
   SignIn,
   useUser,
 } from "@clerk/clerk-react";
-import { Button } from "@/Components/ui/button";
+import { Button } from "@/Components/ui/button";// should probably use this
+import supabase from "../Components/Supabase/supabaseClient"; //calling my supabase function
 
 const LandingPage = () => {
   const [showSignIn, setShowSignIn] = useState(false);
   const [search, setSearch] = useSearchParams();
 
-  const { user } = useUser();
+  const { user, isSignedIn } = useUser();
 
   const navigate = useNavigate();
 
@@ -57,6 +58,36 @@ const LandingPage = () => {
 
     addUserToDatabase();
   }, [user]);
+
+  useEffect(() => {
+    const checkPreferences = async () => {
+      if (user) {
+        console.log("User ID:", user.id);
+        const { data, error } = await supabase
+          .from("user_preferences")
+          .select("preferences")
+          .eq("id", user.id)
+          .single();
+        console.log("Preferences data:", data.id);
+        if (error) {
+          console.error("Error fetching preferences:", error);
+          return;
+        }
+
+        if (!data || !data.preferences) { //funky way of checking if user has preferences
+          navigate("/quiz");
+        }
+      }
+    };
+
+    checkPreferences();
+  }, [user, navigate]);
+
+  useEffect(() => {
+    if (isSignedIn) {
+      navigate("/quiz");
+    }
+  }, [isSignedIn, navigate]);
 
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) {
