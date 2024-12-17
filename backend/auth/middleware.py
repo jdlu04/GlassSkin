@@ -19,7 +19,7 @@ def get_clerk_jwks():
 
 def verify_clerk_token(token):
     try:
-        print(f"Verifying Clerk token: {token}")
+        # print(f"Verifying Clerk token: {token}")
 
         jwk_client = PyJWKClient(CLERK_JWKS_URL)
         signing_key = jwk_client.get_signing_key_from_jwt(token)
@@ -33,7 +33,7 @@ def verify_clerk_token(token):
             leeway=10
         )
 
-        print("Clerk token successfully verified. Decoded payload:", decoded)
+        # print("Clerk token successfully verified. Decoded payload:", decoded)
 
         # Return user information
         return {

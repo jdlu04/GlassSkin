@@ -70,7 +70,7 @@ const router = createBrowserRouter([
 ]);
 
 function GuestOnly({ children }) {
-  const { authUser} = auth();
+  const { authUser } = auth();
   return !authUser ? children : <Navigate to="/" />;
 }
 
@@ -80,7 +80,6 @@ function App() {
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
-
 
   console.log({ authUser });
 

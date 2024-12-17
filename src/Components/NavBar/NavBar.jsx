@@ -36,7 +36,7 @@ const NavBar = () => {
             shopping list
           </Link>
 
-          {(authUser || user) && (
+          {authUser && (
             <>
               <Link to={"/profile"} className={`btn btn-sm gap-2 flex`}>
                 <User className="size-5" />

@@ -12,6 +12,7 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
+import { useSignIn } from "@clerk/clerk-react";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -19,20 +20,29 @@ const LoginPage = () => {
     email: "",
     password: "",
   });
+
   const { login, isLoggingIn } = auth();
+  const { signIn, isLoaded } = useSignIn();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     login(formData);
   };
 
-  const handleGoogleSignIn = () => {
-    // Placeholder for Google sign-in logic
-    console.log("Sign in with Google clicked");
+  const handleGoogleSignIn = async () => {
+    if (!isLoaded) return;
+    try {
+      await signIn.authenticateWithRedirect({
+        strategy: "oauth_google",
+        redirectUrl: "/", 
+      });
+    } catch (error) {
+      console.error("Google Sign-Up Error:", error);
+    }
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
+    <div className="flex justify-center items-center h-screen bg-[#c0c78cb3]">
       <Card className="w-full max-w-md p-6">
         <CardHeader className="text-center">
           <div className="flex flex-col items-center gap-2 group">
@@ -46,7 +56,7 @@ const LoginPage = () => {
           </div>
         </CardHeader>
         <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-10">
+          <form onSubmit={handleSubmit} className="space-y-10">
             <div>
               <Label htmlFor="email" className="block text-sm font-medium">
                 Email
@@ -132,7 +142,10 @@ const LoginPage = () => {
           <div className="text-center mt-4 pt-4">
             <p className="text-sm text-muted-foreground">
               Don&apos;t have an account?{" "}
-              <Link to="/signup" className="text-primary underline text-blue-400">
+              <Link
+                to="/signup"
+                className="text-blue-400 underline"
+              >
                 Create account
               </Link>
             </p>

@@ -12,6 +12,7 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
+import { useSignUp } from "@clerk/clerk-react";
 
 const SignUpPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -22,6 +23,7 @@ const SignUpPage = () => {
   });
 
   const { signup, isSigningUp } = auth();
+  const { signUp, isLoaded } = useSignUp();
 
   const validateForm = () => {
     if (!formData.firstName.trim()) console.log("Name is required");
@@ -43,12 +45,21 @@ const SignUpPage = () => {
     }
   };
 
-  const handleGoogleSignUp = () => {
-    console.log("Sign up with Google clicked");
+
+  const handleGoogleSignUp = async () => {
+    if (!isLoaded) return;
+    try {
+      await signUp.authenticateWithRedirect({
+        strategy: "oauth_google",
+        redirectUrl: "/",
+      });
+    } catch (error) {
+      console.error("Google Sign-Up Error:", error);
+    }
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
+    <div className="flex justify-center items-center h-screen bg-[#c0c78cb3]">
       <Card className="w-full max-w-md p-6">
         <CardHeader className="text-center">
           <div className="flex flex-col items-center gap-2 group">

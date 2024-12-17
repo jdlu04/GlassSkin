@@ -58,6 +58,8 @@ export const auth = create((set, get) => ({
           authProvider: null,
           isCheckingAuth: false 
         });
+      } finally {
+        set({ isCheckingAuth: false });
       }
     }
   },
@@ -93,18 +95,22 @@ export const auth = create((set, get) => ({
     try {
       if (authProvider === "local") {
         await axiosInstance.post("/auth/logout");
+        set({ 
+          authUser: null 
+        });
       } else if (authProvider === "clerk") {
         await clerk.signOut();
+        set({ 
+          authUser: null
+        });
       }
     } catch (error) {
       console.error("Logout error:", error);
     } finally {
       set({ 
-        authUser: null, 
-        authProvider: null 
+        authUser: null,
       });
       console.log("Logged out successfully");
-      window.location.reload();
     }
   },
 }));
