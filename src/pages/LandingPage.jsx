@@ -31,67 +31,67 @@ const LandingPage = () => {
     }
   }, [search]);
 
-  // useEffect(() => {
-  //   const addUserToDatabase = async () => {
-  //     if (user) {
-  //       try {
-  //         const response = await fetch(
-  //           "http://localhost:5000/api/auth/sync_user",
-  //           {
-  //             method: "POST",
-  //             headers: {
-  //               "Content-Type": "application/json",
-  //             },
-  //             body: JSON.stringify({
-  //               id: user.id,
-  //               primaryEmailAddress: user.primaryEmailAddress.emailAddress,
-  //               createdAt: user.createdAt,
-  //               firstName: user.firstName,
-  //               lastName: user.lastName,
-  //             }),
-  //           }
-  //         );
+  useEffect(() => {
+    const addUserToDatabase = async () => {
+      if (user) {
+        try {
+          const response = await fetch(
+            "http://localhost:5000/api/auth/sync_user",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                id: user.id,
+                primaryEmailAddress: user.primaryEmailAddress.emailAddress,
+                createdAt: user.createdAt,
+                firstName: user.firstName,
+                lastName: user.lastName,
+              }),
+            }
+          );
 
-  //         if (!response.ok) {
-  //           throw new Error("Failed to add user");
-  //         }
+          if (!response.ok) {
+            throw new Error("Failed to add user");
+          }
 
-  //         const result = await response.json();
-  //         console.log(result.message);
-  //         checkAuth();
-  //       } catch (error) {
-  //         console.error("Error adding user:", error);
-  //       }
-  //     }
-  //   };
+          const result = await response.json();
+          console.log(result.message);
+          checkAuth();
+        } catch (error) {
+          console.error("Error adding user:", error);
+        }
+      }
+    };
 
-  //   addUserToDatabase();
-  // }, [user]);
+    addUserToDatabase();
+  }, [user]);
 
-  // useEffect(() => {
-  //   const checkPreferences = async () => {
-  //     if (user) {
-  //       //console.log("User ID:", user.id);
-  //       const { data, error } = await supabase
-  //         .from("user_preferences")
-  //         .select("preferences")
-  //         .eq("id", user.id)
-  //         .single();
-  //       //console.log("Preferences data:", data.id);
-  //       if (error) {
-  //         console.error("Error fetching preferences:", error);
-  //         navigate("/quiz"); //if error, navigate to quiz, lol
-  //         return;
-  //       }
+  useEffect(() => {
+    const checkPreferences = async () => {
+      if (user) {
+        //console.log("User ID:", user.id);
+        const { data, error } = await supabase
+          .from("user_preferences")
+          .select("preferences")
+          .eq("id", user.id)
+          .single();
+        //console.log("Preferences data:", data.id);
+        if (error) {
+          console.error("Error fetching preferences:", error);
+          navigate("/quiz"); //if error, navigate to quiz, lol
+          return;
+        }
 
-  //       if (data && (!data.preferences || data.preferences.length === 0)) {
-  //         navigate("/quiz"); //funky way of checking if user has preferences
-  //       }
-  //     }
-  //   };
+        if (data && (!data.preferences || data.preferences.length === 0)) {
+          navigate("/quiz"); //funky way of checking if user has preferences
+        }
+      }
+    };
 
-  //   checkPreferences();
-  // }, [user, navigate]);
+    checkPreferences();
+  }, [user, navigate]);
 
   // const handleOverlayClick = (e) => {
   //   if (e.target === e.currentTarget) {

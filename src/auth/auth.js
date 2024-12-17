@@ -184,6 +184,7 @@ signup: async (formData) => {
 },
 logout: async () => {
   try {
+    await clerk.signOut();
     await axiosInstance.post("/auth/logout");
     set({
       authUser: null,

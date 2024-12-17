@@ -13,12 +13,7 @@ from auth.routes import auth_bp
 
 #note to professor, we have six routes in app.py, and 5 routes in auth/routes.py.
 app = flask.Flask(__name__)
-CORS(
-    app,
-    supports_credentials=True,  
-    origins=["http://localhost:5173"], 
-    allow_headers=["Content-Type", "Authorization"]  
-)
+CORS(app, supports_credentials=True, allow_headers=["Content-Type", "Authorization"])
 
 load_dotenv()
 
@@ -54,7 +49,7 @@ def get_makeup(): #params setup
     }
     params = {k: v for k, v in params.items() if v is not None} #param filtering
     
-    response = requests.get('https://makeup-api.herokuapp.com/api/v1/products.json', params=params)
+    response = requests.get('https://makeup-api.herokuapp.com/api/v1/products.json', params=params, verify=False)
     data=response.json()
     filtered_data = [ #filtering out unnecessary cols
         {
@@ -92,7 +87,7 @@ def get_makeup_uncapped(): #params setup
     }
     params = {k: v for k, v in params.items() if v is not None} #param filtering
     
-    response = requests.get('https://makeup-api.herokuapp.com/api/v1/products.json', params=params)
+    response = requests.get('https://makeup-api.herokuapp.com/api/v1/products.json', params=params, verify=False)
     data=response.json()
     filtered_data = [ #filtering out unnecessary cols
         {
@@ -120,7 +115,7 @@ def get_makeup_uncapped(): #params setup
 @app.route('/api/specific/<int:product_id>', methods=['GET'])
 def get_specific(product_id):
     response = requests.get(
-        f'https://makeup-api.herokuapp.com/api/v1/products/{product_id}.json')
+        f'https://makeup-api.herokuapp.com/api/v1/products/{product_id}.json', verify=False)
     return response.json()
 
 @app.route('/supabase/getPreference', methods=['GET'])
