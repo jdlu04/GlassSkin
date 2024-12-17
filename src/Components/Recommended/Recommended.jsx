@@ -62,7 +62,7 @@ const Recommended = () => {
                 <a href={item.product_link} target="_blank" rel="noopener noreferrer">
                   <img src={`https:${item.api_featured_image}`} alt={item.name} />
                 </a>
-                <p>{item.description}</p>
+                
                 <p>Price: {item.price}</p>
                 <p>Rating: {item.rating}</p>
                 <p>Brand: {item.brand}</p>

@@ -31,30 +31,34 @@ const ProductCard = ({product}) => {
     fetchProduct();
   }, []);
 */
-  return (
-    product ? (
-      <button className='w-1/4 rounded-lg hover:shadow-2xl hover:bg-gray-200 '>
-        <img className='p-5' src={`https:${product.api_featured_image}`} alt={product.name} />
-        <div>
-          <h1>{product.brand}</h1>
-          <h1>{product.name}</h1>
-          <h1>${product.price}</h1>
-          <div className='flex flex-wrap m-2'>
-            {product.product_colors.map((color, index) => (
-              <div
-                key={index}
-                className='w-5 h-5 m-1 rounded-full'
-                style={{ backgroundColor: color.hex_value }}
-                title={color.colour_name}
-              />
-            ))}
-          </div>
+const handleButtonClick = () => { //this function is used to redirect the user to the product link
+  window.open(product.product_link, '_blank', 'noopener,noreferrer');
+};
+return (
+  product ? (
+    <button
+      className='w-1/4 rounded-lg hover:shadow-2xl hover:bg-gray-200'
+      onClick={handleButtonClick}
+    >
+      <img className='p-5' src={`https:${product.api_featured_image}`} alt={product.name} />
+      <div>
+        <h1>{product.brand}</h1>
+        <h1>{product.name}</h1>
+        <h1>${product.price}</h1>
+        <div className='flex flex-wrap m-2'>
+          {product.product_colors.map((color, index) => (
+            <div
+              key={index}
+              className='w-5 h-5 m-1 rounded-full'
+              style={{ backgroundColor: color.hex_value }}
+              title={color.colour_name}
+            />
+          ))}
         </div>
-      </button>
-    ) : (
-      <p>Loading...</p>
-    )
-  );
+      </div>
+    </button>
+  ) : null
+);
 };
 
 export default ProductCard;
