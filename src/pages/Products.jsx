@@ -1,7 +1,7 @@
 import React from 'react'
 import ProductCard from "../Components/ProductCard";
 import { useState, useEffect } from 'react';
-import { Heart } from 'lucide-react';
+import { Heart, Loader2 } from 'lucide-react';
 import supabase from "../Components/Supabase/supabaseClient"; // Supabase client
 import { useUser } from "@clerk/clerk-react"; // Clerk user hook
 
@@ -188,7 +188,9 @@ const Products = () => {
             </div>
           ))
         ) : (
-          <p>Loading...</p>
+            <div className="flex justify-center h-screen pt-10">
+              <Loader2 className="size-10 animate-spin" />
+            </div>
         )}
       </div>
     </>
