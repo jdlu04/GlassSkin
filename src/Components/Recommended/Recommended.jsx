@@ -6,17 +6,19 @@ import './Recommended.css'; // Import custom CSS for the carousel
 const Recommended = () => {
   const [recommendations, setRecommendations] = useState([]);
   const { user } = useUser(); // Get the current user
-
+  
   useEffect(() => {
     const fetchRecommendations = async () => {
       if (user) {
+        console.log('User type:', typeof(user.id),user.id);//debug
         try {
+          
           const { data, error } = await supabase
             .from('user_preferences')
             .select('*')
             .eq('id', user.id)
             .single();
-
+          console.log('Data:', data);//debug
           if (error) {
             console.error("Error fetching user preferences:", error);
             return;
@@ -49,7 +51,6 @@ const Recommended = () => {
 
     fetchRecommendations();
   }, [user]);
-
   return ( //info displayed on the recommended component
     <div>
       <h1>Recommended Products</h1>

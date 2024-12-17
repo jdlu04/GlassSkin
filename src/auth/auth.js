@@ -13,7 +13,7 @@ export const auth = create((set, get) => ({
   isLoggingIn: false,
   isCheckingAuth: true,
   authProvider: null,
-
+/*
   checkAuth: async () => {
     try {
       // Try local authentication first
@@ -118,4 +118,79 @@ export const auth = create((set, get) => ({
       console.log("Logged out successfully");
     }
   },
+}));
+*/
+checkAuth: async () => {
+  try {
+    // Skip local authentication and check Clerk session directly
+    await clerk.load();
+    const session = clerk.session;
+
+    if (!session) {
+      console.warn("No active Clerk session");
+      set({
+        authUser: null,
+        authProvider: null,
+        isCheckingAuth: false
+      });
+      return;
+    }
+
+    const token = await session.getToken(); // Get Clerk token
+    if (!token) throw new Error("Failed to retrieve Clerk Token");
+
+    set({
+      authUser: session.user,
+      authProvider: "clerk",
+      isCheckingAuth: false
+    });
+  } catch (error) {
+    console.error("Clerk authentication error:", error);
+    set({
+      authUser: null,
+      authProvider: null,
+      isCheckingAuth: false
+    });
+  }
+},
+
+login: async (formData) => {
+  set({ isLoggingIn: true });
+  try {
+    const res = await axiosInstance.post("/auth/login", formData);
+    set({
+      authUser: res.data,
+      authProvider: "local",
+      isLoggingIn: false
+    });
+  } catch (error) {
+    console.error("Login error:", error);
+    set({ isLoggingIn: false });
+  }
+},
+signup: async (formData) => {
+  set({ isSigningUp: true });
+  try {
+    const res = await axiosInstance.post("/auth/signup", formData);
+    set({
+      authUser: res.data,
+      authProvider: "local",
+      isSigningUp: false
+    });
+  } catch (error) {
+    console.error("Sign-Up error:", error);
+    set({ isSigningUp: false });
+  }
+},
+logout: async () => {
+  try {
+    await axiosInstance.post("/auth/logout");
+    set({
+      authUser: null,
+      authProvider: null
+    });
+  } catch (error) {
+    console.error("Logout error:", error);
+  }
+}
 }));

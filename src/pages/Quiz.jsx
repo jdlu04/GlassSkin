@@ -37,7 +37,7 @@ const Quiz = () => {
 
         if (index === data.length - 1) {
             sendPreferences();
-            navigate('/shopping-list');
+            navigate('/products');
             return;
         }
 
