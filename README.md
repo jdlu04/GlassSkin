@@ -25,6 +25,7 @@ Then, you'll want to install all backend dependencies:
 ```bash
 pip install -r requirements.txt
 ```
+Note, you will need 2 env files in the backend and frontend respectively. Backend env contains jwt secret and supabase info, whereas frontend env contains clerk key and supabase info
 
 ## Running the App
 
@@ -47,3 +48,8 @@ Then do:
 ```bash
 python app.py
 ```
+## Navigation
+- You can find all of our pages in `/src/pages`, including landing page, login, products, and quiz
+- `App.jsx` contains our redirects and pathing to the pages
+- Components can be found in `src/components` and contains several utilities including supabase client, navbar, product carts, and more
+- In our `backend` directory we have `auth` folder with JWT route-checking, and `app.py` containing traditional Flask routes. In total we have about 11 routes between `auth/routes.py` and `app.py`
