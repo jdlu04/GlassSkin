@@ -31,8 +31,13 @@ export const auth = create((set, get) => ({
         await clerk.load();
         const session = clerk.session;
 
+        if(!session) {
+          console.warn("No active clerk session");
+        }
+
         if (session) {
           const token = await session.getToken(); // Get Clerk token
+          if(!token) throw new Error("Failed to retrieve Clerk Token");
 
           // Send token to backend for Clerk user authentication
           const res = await axiosInstance.get("/auth/checkauth", {

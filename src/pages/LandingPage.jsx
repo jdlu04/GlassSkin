@@ -31,42 +31,42 @@ const LandingPage = () => {
     }
   }, [search]);
 
-  useEffect(() => {
-    const addUserToDatabase = async () => {
-      if (user) {
-        try {
-          const response = await fetch(
-            "http://localhost:5000/api/auth/sync_user",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                id: user.id,
-                primaryEmailAddress: user.primaryEmailAddress.emailAddress,
-                createdAt: user.createdAt,
-                firstName: user.firstName,
-                lastName: user.lastName,
-              }),
-            }
-          );
+  // useEffect(() => {
+  //   const addUserToDatabase = async () => {
+  //     if (user) {
+  //       try {
+  //         const response = await fetch(
+  //           "http://localhost:5000/api/auth/sync_user",
+  //           {
+  //             method: "POST",
+  //             headers: {
+  //               "Content-Type": "application/json",
+  //             },
+  //             body: JSON.stringify({
+  //               id: user.id,
+  //               primaryEmailAddress: user.primaryEmailAddress.emailAddress,
+  //               createdAt: user.createdAt,
+  //               firstName: user.firstName,
+  //               lastName: user.lastName,
+  //             }),
+  //           }
+  //         );
 
-          if (!response.ok) {
-            throw new Error("Failed to add user");
-          }
+  //         if (!response.ok) {
+  //           throw new Error("Failed to add user");
+  //         }
 
-          const result = await response.json();
-          console.log(result.message);
-          checkAuth();
-        } catch (error) {
-          console.error("Error adding user:", error);
-        }
-      }
-    };
+  //         const result = await response.json();
+  //         console.log(result.message);
+  //         checkAuth();
+  //       } catch (error) {
+  //         console.error("Error adding user:", error);
+  //       }
+  //     }
+  //   };
 
-    addUserToDatabase();
-  }, [user]);
+  //   addUserToDatabase();
+  // }, [user]);
 
   // useEffect(() => {
   //   const checkPreferences = async () => {
